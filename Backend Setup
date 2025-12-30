@@ -3,3 +3,5 @@ We are setting up FastAPI specific to this project. Here are the steps to be fol
 2. Activate the pip. To activate, go to the environment_name folder and inside the folder, go to Script folder. We will use powershell to activate pip. Select the powershell file path and paste it in the terminal itself and hit enter.
 3. To check the environment is activated, in the  terminal, before the path, you will see (environment_name) written.
 4. we have installed the web server uvicorn. Run the web server using the command: "uvicorn main:app --reload". Here main refers to the module which we have created as main.py file and app is the object name created in main module.
+
+# swagger is inbuilt in fastAPI and is enabled by default. use the url localhost:8000/docs to open the swagger
