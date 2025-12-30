@@ -2,6 +2,7 @@
 #     app = FastAPI()
 #     return app
 from fastapi import FastAPI
+from fastapi.routing import HTTPException
 from models import Product
 
 app = FastAPI()
@@ -28,3 +29,15 @@ products = [
 @app.get("/products")
 def get_products():
     return products
+
+@app.get("/products/{product_id}")
+def get_product(product_id: int):
+    product: Product = next((product for product in products if product.id == product_id), None)
+    if product is None:
+        raise HTTPException(status_code=404, detail="Product not found")
+    return product
+
+@app.post("/product")
+def create_product(product: Product):
+    products.append(product)
+    return product
