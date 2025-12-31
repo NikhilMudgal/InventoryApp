@@ -41,3 +41,11 @@ def get_product(product_id: int):
 def create_product(product: Product):
     products.append(product)
     return product
+
+@app.put("/product")
+def update_product(product: Product):
+    index: int = next((i for i, p in enumerate(products) if product.id == p.id), -1)
+    if index == -1:
+        raise HTTPException(status_code=404, detail="Product not found")
+    products[index] = product
+    return products
