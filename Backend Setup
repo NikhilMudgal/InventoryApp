@@ -1,3 +1,5 @@
+#Setup FAstAPI
+
 We are setting up FastAPI specific to this project. Here are the steps to be followed to setup the FastAPI.
 1. Run the command "python -m venv environment_name". This will create a folder in the project directory itself by the name of "environment_name".
 2. Activate the pip. To activate, go to the environment_name folder and inside the folder, go to Script folder. We will use powershell to activate pip. Select the powershell file path and paste it in the terminal itself and hit enter.
@@ -5,3 +7,8 @@ We are setting up FastAPI specific to this project. Here are the steps to be fol
 4. we have installed the web server uvicorn. Run the web server using the command: "uvicorn main:app --reload". Here main refers to the module which we have created as main.py file and app is the object name created in main module.
 
 # swagger is inbuilt in fastAPI and is enabled by default. use the url localhost:8000/docs to open the swagger
+
+#Setup Database
+Install postGresql Database
+we are setting up SQLAlchemy ORM to query postgresql database and postgresql driver which is psycopg2
+
