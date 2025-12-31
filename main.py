@@ -49,3 +49,11 @@ def update_product(product: Product):
         raise HTTPException(status_code=404, detail="Product not found")
     products[index] = product
     return products
+
+@app.delete("/product/{product_id}")
+def delete_product(product_id: int):
+    index: int = next((i for i, p in enumerate(products) if product_id == p.id), -1)
+    if index == -1:
+        raise HTTPException(status_code=404, detail="Product not found")
+    products.pop(index)
+    return products
