@@ -3,6 +3,7 @@
 #     return app
 from fastapi import FastAPI
 from fastapi.routing import HTTPException
+from sqlalchemy.orm import session
 from models import Product
 
 app = FastAPI()
@@ -28,6 +29,8 @@ products = [
 
 @app.get("/products")
 def get_products():
+    db = session()
+    db.query()
     return products
 
 @app.get("/products/{product_id}")
