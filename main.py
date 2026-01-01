@@ -31,6 +31,19 @@ products = [
     Product(id=10, name="Printer", description="Printer", price=350, quantity=15)
 ]
 
+def init_db():
+    db = Session()
+
+    count = db.query(database_models.Product).count()
+
+    if count == 0:
+        for product in products:
+            db.add(database_models.Product(**product.model_dump()))
+    db.commit()
+
+
+init_db()
+
 @app.get("/products")
 def get_products():
     db = session()
