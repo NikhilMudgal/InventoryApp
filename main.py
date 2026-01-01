@@ -64,22 +64,31 @@ def get_product(product_id: int, db: Session = Depends(get_db)):
     return db_product
 
 @app.post("/product")
-def create_product(product: Product):
-    products.append(product)
+def create_product(product: Product, db: Session = Depends(get_db)):
+    db.add(database_models.Product(**product.model_dump()))
+    db.commit()
     return product
 
 @app.put("/product")
-def update_product(product: Product):
-    index: int = next((i for i, p in enumerate(products) if product.id == p.id), -1)
-    if index == -1:
+def update_product(product_id: int, product: Product, db: Session = Depends(get_db)):
+    db_product = db.query(database_models.Product).filter(database_models.Product.id == product_id).first()
+    if db_product is None:
         raise HTTPException(status_code=404, detail="Product not found")
-    products[index] = product
-    return products
+    else:
+        db_product.name = product.name
+        db_product.description = product.description
+        db_product.price = product.price
+        db_product.quantity = product.quantity
+        db.commit()
+        return "Product updated successfully"
 
-@app.delete("/product/{product_id}")
-def delete_product(product_id: int):
-    index: int = next((i for i, p in enumerate(products) if product_id == p.id), -1)
-    if index == -1:
+@app.delete("/product")
+def delete_product(product_id: int, product: Product, db: Session = Depends(get_db)):
+
+    db_product = db.query(database_models.Product).filter(database_models.Product.id == product_id).first()
+    if db_product is None:
         raise HTTPException(status_code=404, detail="Product not found")
-    products.pop(index)
-    return products
+    else:
+        db.delete(db_product)
+        db.commit()
+        return "Product deleted successfully"
