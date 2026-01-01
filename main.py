@@ -5,6 +5,10 @@ from fastapi import FastAPI
 from fastapi.routing import HTTPException
 from sqlalchemy.orm import session
 from models import Product
+from database import Session, engine
+import database_models
+
+database_models.Base.metadata.create_all(bind=engine) # This is the command to create the tables in the database.
 
 app = FastAPI()
 
