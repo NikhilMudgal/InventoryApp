@@ -1,9 +1,9 @@
 # def create_app():
 #     app = FastAPI()
 #     return app
-from fastapi import FastAPI
+from fastapi import Depends, FastAPI
 from fastapi.routing import HTTPException
-from sqlalchemy.orm import session
+from sqlalchemy.orm import Session
 from models import Product
 from database import Session, engine
 import database_models
@@ -31,6 +31,13 @@ products = [
     Product(id=10, name="Printer", description="Printer", price=350, quantity=15)
 ]
 
+def get_db():
+    db = Session()
+    try:
+        yield db
+    finally:
+        db.close()
+
 def init_db():
     db = Session()
 
@@ -45,17 +52,16 @@ def init_db():
 init_db()
 
 @app.get("/products")
-def get_products():
-    db = session()
-    db.query()
-    return products
+def get_products(db: Session = Depends(get_db)):
+    db_products = db.query(database_models.Product).all()
+    return db_products
 
 @app.get("/products/{product_id}")
-def get_product(product_id: int):
-    product: Product = next((product for product in products if product.id == product_id), None)
-    if product is None:
+def get_product(product_id: int, db: Session = Depends(get_db)):
+    db_product = db.query(database_models.Product).filter(database_models.Product.id == product_id).first()
+    if db_product is None:
         raise HTTPException(status_code=404, detail="Product not found")
-    return product
+    return db_product
 
 @app.post("/product")
 def create_product(product: Product):
